@@ -1,10 +1,10 @@
-/*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+/**
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef _PLUGIN_MANAGER_H_
-#define _PLUGIN_MANAGER_H_
+#ifndef PLUGIN_MANAGER_H
+#define PLUGIN_MANAGER_H
 
 #include <string>
 #include <unordered_map>
@@ -33,7 +33,6 @@ public:
 
     static napi_value GetContext(napi_env env, napi_callback_info info);
     
-//     OH_NativeXComponent* GetNativeXComponent(std::string& id);
     void SetNativeXComponent(std::string& id, OH_NativeXComponent* nativeXComponent);
     PluginRender* GetRender(std::string& id);
 
@@ -43,7 +42,6 @@ public:
     uv_async_t mainOnMessageSignal_ {};
 
 private:
-//     static void MainOnMessage(const uv_async_t* req);
     static PluginManager manager_;
 
     std::string id_;
@@ -51,4 +49,4 @@ private:
     std::unordered_map<std::string, PluginRender*> pluginRenderMap_;
 };
 
-#endif // _PLUGIN_MANAGER_H_
+#endif // PLUGIN_MANAGER_H

@@ -28,7 +28,7 @@ struct Index {
   private lastProcessedOffset: number = 0
 
   showGameOverDialog() {
-    AlertDialog.show({
+    this.getUIContext().showAlertDialog({
       title: 'Game Over!',
       message: `Your Score: ${this.finalScore}`,
       autoCancel: true,

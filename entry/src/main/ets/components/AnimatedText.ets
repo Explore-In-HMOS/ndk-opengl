@@ -1,7 +1,7 @@
 import { curves } from '@kit.ArkUI';
 
 @Builder
-function AnimatedText(opacityValue: number, translateY: number) {
+function animatedText(opacityValue: number, translateY: number) {
   Column() {
     Text('ASMR Simulations')
       .opacity(opacityValue)
@@ -20,7 +20,7 @@ function AnimatedText(opacityValue: number, translateY: number) {
         iterations: 1,
         duration: 500,
         delay: 500,
-        playMode: PlayMode.Alternate,
+        playMode: PlayMode.Alternate
       })
       .onAppear(() => {
         opacityValue = 1;

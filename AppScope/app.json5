@@ -1,6 +1,6 @@
 {
   "app": {
-    "bundleName": "com.hmosdemos.ndkopenglspacegame",
+    "bundleName": "com.hmosdemos.wearable.ndk_opengl",
     "vendor": "hmosdemos",
     "versionCode": 1000000,
     "versionName": "1.0.0",

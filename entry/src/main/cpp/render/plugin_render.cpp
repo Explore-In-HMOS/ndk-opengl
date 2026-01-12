@@ -1,3 +1,18 @@
+/**
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <cstdint>
 #include <hilog/log.h>
 #include "common/plugin_common.h"
@@ -14,7 +29,8 @@ struct GameOverPayload {
     int score;
 };
 
-static void CallGameOverJS(napi_env env, napi_value js_callback, void *context, void *data) {
+static void CallGameOverJS(napi_env env, napi_value js_callback, void *context, void *data)
+{
     std::unique_ptr<GameOverPayload> payload(static_cast<GameOverPayload *>(data));
 
     if (env == nullptr || js_callback == nullptr) {
@@ -42,7 +58,8 @@ static void CallGameOverJS(napi_env env, napi_value js_callback, void *context, 
     }
 }
 
-void OnSurfaceCreatedCB(OH_NativeXComponent *component, void *window) {
+void OnSurfaceCreatedCB(OH_NativeXComponent *component, void *window)
+{
     LOGD("OnSurfaceCreatedCB");
     int32_t ret;
     char idStr[OH_XCOMPONENT_ID_LEN_MAX + 1] = {};
@@ -58,7 +75,8 @@ void OnSurfaceCreatedCB(OH_NativeXComponent *component, void *window) {
     render->OnSurfaceCreated(component, window);
 }
 
-void OnSurfaceChangedCB(OH_NativeXComponent *component, void *window) {
+void OnSurfaceChangedCB(OH_NativeXComponent *component, void *window)
+{
     LOGD("OnSurfaceChangedCB");
     int32_t ret;
     char idStr[OH_XCOMPONENT_ID_LEN_MAX + 1] = {};
@@ -72,7 +90,8 @@ void OnSurfaceChangedCB(OH_NativeXComponent *component, void *window) {
     render->OnSurfaceChanged(component, window);
 }
 
-void OnSurfaceDestroyedCB(OH_NativeXComponent *component, void *window) {
+void OnSurfaceDestroyedCB(OH_NativeXComponent *component, void *window)
+{
     LOGD("OnSurfaceDestroyedCB");
     int32_t ret;
     char idStr[OH_XCOMPONENT_ID_LEN_MAX + 1] = {};
@@ -86,7 +105,8 @@ void OnSurfaceDestroyedCB(OH_NativeXComponent *component, void *window) {
     render->OnSurfaceDestroyed(component, window);
 }
 
-PluginRender::PluginRender(std::string &id) : id_(id) {
+PluginRender::PluginRender(std::string &id) : id_(id)
+{
     eglCore_ = new EGLCore(id);
     auto renderCallback = PluginRender::GetNXComponentCallback();
     renderCallback->OnSurfaceCreated = OnSurfaceCreatedCB;
@@ -94,7 +114,8 @@ PluginRender::PluginRender(std::string &id) : id_(id) {
     renderCallback->OnSurfaceDestroyed = OnSurfaceDestroyedCB;
 }
 
-PluginRender *PluginRender::GetInstance(std::string &id) {
+PluginRender *PluginRender::GetInstance(std::string &id)
+{
     if (instance_.find(id) == instance_.end()) {
         PluginRender *instance = new PluginRender(id);
         instance_[id] = instance;
@@ -104,13 +125,18 @@ PluginRender *PluginRender::GetInstance(std::string &id) {
     }
 }
 
-OH_NativeXComponent_Callback *PluginRender::GetNXComponentCallback() { return &PluginRender::callback_; }
+OH_NativeXComponent_Callback *PluginRender::GetNXComponentCallback()
+{
+    return &PluginRender::callback_;
+}
 
-void PluginRender::SetNativeXComponent(OH_NativeXComponent *component) {
+void PluginRender::SetNativeXComponent(OH_NativeXComponent *component)
+{
     OH_NativeXComponent_RegisterCallback(component, &PluginRender::callback_);
 }
 
-void PluginRender::OnSurfaceCreated(OH_NativeXComponent *component, void *window) {
+void PluginRender::OnSurfaceCreated(OH_NativeXComponent *component, void *window)
+{
     LOGD("PluginRender::OnSurfaceCreated");
     int32_t ret = OH_NativeXComponent_GetXComponentSize(component, window, &width_, &height_);
     if (ret == OH_NATIVEXCOMPONENT_RESULT_SUCCESS && eglCore_) {
@@ -118,7 +144,8 @@ void PluginRender::OnSurfaceCreated(OH_NativeXComponent *component, void *window
     }
 }
 
-void PluginRender::OnSurfaceChanged(OH_NativeXComponent *component, void *window) {
+void PluginRender::OnSurfaceChanged(OH_NativeXComponent *component, void *window)
+{
     LOGD("PluginRender::OnSurfaceChanged");
     int32_t ret = OH_NativeXComponent_GetXComponentSize(component, window, &width_, &height_);
     if (ret == OH_NATIVEXCOMPONENT_RESULT_SUCCESS && eglCore_) {
@@ -126,7 +153,8 @@ void PluginRender::OnSurfaceChanged(OH_NativeXComponent *component, void *window
     }
 }
 
-void PluginRender::OnSurfaceDestroyed(OH_NativeXComponent *component, void *window) {
+void PluginRender::OnSurfaceDestroyed(OH_NativeXComponent *component, void *window)
+{
     LOGD("PluginRender::OnSurfaceDestroyed");
     char idStr[OH_XCOMPONENT_ID_LEN_MAX + 1] = {};
     uint64_t idSize = OH_XCOMPONENT_ID_LEN_MAX + 1;
@@ -152,7 +180,8 @@ void PluginRender::OnSurfaceDestroyed(OH_NativeXComponent *component, void *wind
     }
 }
 
-napi_value PluginRender::Export(napi_env env, napi_value exports) {
+napi_value PluginRender::Export(napi_env env, napi_value exports)
+{
     LOGI("PluginRender::Export");
 
     napi_property_descriptor desc[] = {
@@ -168,7 +197,8 @@ napi_value PluginRender::Export(napi_env env, napi_value exports) {
     return exports;
 }
 
-napi_value PluginRender::NapiSetGameOverCallback(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiSetGameOverCallback(napi_env env, napi_callback_info info)
+{
     LOGI("NapiSetGameOverCallback called");
 
     size_t argc = 2;
@@ -230,7 +260,8 @@ napi_value PluginRender::NapiSetGameOverCallback(napi_env env, napi_callback_inf
     return undefined;
 }
 
-napi_value PluginRender::NapiMoveLeft(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiMoveLeft(napi_env env, napi_callback_info info)
+{
     LOGD("NapiMoveLeft called");
 
     size_t argc = 1;
@@ -260,7 +291,8 @@ napi_value PluginRender::NapiMoveLeft(napi_env env, napi_callback_info info) {
     return nullptr;
 }
 
-napi_value PluginRender::NapiMoveRight(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiMoveRight(napi_env env, napi_callback_info info)
+{
     LOGD("NapiMoveRight called");
 
     size_t argc = 1;
@@ -290,7 +322,8 @@ napi_value PluginRender::NapiMoveRight(napi_env env, napi_callback_info info) {
     return nullptr;
 }
 
-napi_value PluginRender::NapiRestartGame(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiRestartGame(napi_env env, napi_callback_info info)
+{
     LOGD("NapiRestartGame called");
 
     size_t argc = 1;
@@ -320,17 +353,20 @@ napi_value PluginRender::NapiRestartGame(napi_env env, napi_callback_info info) 
     return nullptr;
 }
 
-napi_value PluginRender::NapiSwitchAmbient(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiSwitchAmbient(napi_env env, napi_callback_info info)
+{
     LOGD("NapiSwitchAmbient - Deprecated");
     return nullptr;
 }
 
-napi_value PluginRender::NapiSwitchDiffuse(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiSwitchDiffuse(napi_env env, napi_callback_info info)
+{
     LOGD("NapiSwitchDiffuse - Deprecated");
     return nullptr;
 }
 
-napi_value PluginRender::NapiSwitchSpecular(napi_env env, napi_callback_info info) {
+napi_value PluginRender::NapiSwitchSpecular(napi_env env, napi_callback_info info)
+{
     LOGD("NapiSwitchSpecular - Deprecated");
     return nullptr;
 }

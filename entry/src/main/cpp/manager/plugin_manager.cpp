@@ -1,6 +1,16 @@
-/*
- * Copyright (c) 2024 Huawei Device Co., Ltd.
+/**
+ * Copyright (c) Huawei Technologies Co., Ltd. 2025. All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 #include <cstdint>
@@ -13,7 +23,8 @@
 
 PluginManager PluginManager::manager_;
 
-napi_value PluginManager::GetContext(napi_env env, napi_callback_info info) {
+napi_value PluginManager::GetContext(napi_env env, napi_callback_info info)
+{
     napi_status status;
     napi_value exports;
     size_t argc = 1;
@@ -42,7 +53,8 @@ napi_value PluginManager::GetContext(napi_env env, napi_callback_info info) {
     return exports;
 }
 
-bool PluginManager::Export(napi_env env, napi_value exports) {
+bool PluginManager::Export(napi_env env, napi_value exports)
+{
     napi_status status;
     napi_value exportInstance = nullptr;
     OH_NativeXComponent *nativeXComponent = nullptr;
@@ -79,7 +91,8 @@ bool PluginManager::Export(napi_env env, napi_value exports) {
     return false;
 }
 
-void PluginManager::SetNativeXComponent(std::string& id, OH_NativeXComponent* nativeXComponent) {
+void PluginManager::SetNativeXComponent(std::string& id, OH_NativeXComponent* nativeXComponent)
+{
     if (nativeXComponent == nullptr) {
         return;
     }
@@ -97,7 +110,8 @@ void PluginManager::SetNativeXComponent(std::string& id, OH_NativeXComponent* na
     }
 }
 
-PluginRender *PluginManager::GetRender(std::string& id) {
+PluginRender *PluginManager::GetRender(std::string& id)
+{
     if (pluginRenderMap_.find(id) == pluginRenderMap_.end()) {
         PluginRender *instance = PluginRender::GetInstance(id);
         pluginRenderMap_[id] = instance;
